@@ -1,0 +1,89 @@
+.container {
+  padding: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  gap: 10px;
+
+  .logo {
+    flex: 0 0 20%;
+    max-width: 20%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    img {
+      width: 100%;
+      max-width: 250px;
+      height: 80%;
+    }
+  }
+
+  .search {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    .input-btn {
+      flex: 0 0 75%;
+      display: flex;
+      align-items: center;
+      input {
+        flex: 1;
+        padding: 7px 9px;
+      }
+      button {
+        height: 100%;
+        background: #FE3233;
+        border: none;
+        flex: 0 0 25%;
+        cursor: pointer;
+        color: white;
+        flex: 0 0 25%;
+        font-weight: 700;
+      }
+    }
+  }
+
+  .routes-cart {
+    flex: 0 0 20%;
+    max-width: 20%;
+    .routes {
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+      gap: 7px;
+      a {
+        color: white;
+        text-decoration: none;
+        &:hover,
+        &.active {
+          text-decoration: underline;
+          color: #FE3233;
+        }
+      }
+      .cart-icon {
+        position: relative;
+        cursor: pointer;
+        span {
+          transform: scale(0.7);
+          position: absolute;
+          left: 50%;
+          bottom: 14px;
+          background: #FE3233;
+          border-radius: 50%;
+          padding: 0px 10px;
+          font-size: 16px;
+        }
+      }
+    }
+  }
+
+  .menu {
+    flex: 0 0 6%;
+    max-width: 6%;
+    display: flex;
+    justify-content: flex-end;
+    cursor: pointer;
+  }
+}

@@ -1,0 +1,33 @@
+<mat-form-field class="input-group" [style.width]="'90%'">
+  <mat-label>{{label}}</mat-label>
+  <ng-container *ngIf="type !== 'password'">
+    <input [type]="type"
+           matInput
+           #input
+           class="input"
+           (input)="onChange($event.target?.value)"
+           (blur)="onTouched()"
+           [placeholder]="label" />
+  </ng-container>
+
+  <div class="pass" *ngIf="type === 'password'">
+    <input [type]="hide ? 'password' : 'text'"
+           matInput
+           class="input"
+           #input
+           (input)="onChange($event.target?.value)"
+           (blur)="onTouched()"
+           [placeholder]="label" />
+    <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+    <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+    </button>
+  </div>
+
+</mat-form-field>
+<div class="errors" *ngIf="(controlDir?.control?.touched && !controlDir?.control?.valid)">
+  <mat-error *ngIf="controlDir?.control?.errors?.required">{{label}} is required</mat-error>
+</div>
+<div class="errors" *ngIf="(controlDir?.control?.dirty)">
+  <mat-error *ngIf="controlDir?.control?.errors?.isMatching">Passwords do not match</mat-error>
+  <mat-error *ngIf="controlDir?.control?.errors?.emailExists">Email Already Exists</mat-error>
+</div>

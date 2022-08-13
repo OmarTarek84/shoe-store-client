@@ -1,0 +1,23 @@
+.input-group {
+  margin-top: 10px;
+}
+
+.input-group .mat-form-field + .mat-form-field {
+  margin-left: 8px;
+}
+
+input.input::-webkit-outer-spin-button,
+input.input::-webkit-inner-spin-button {
+  display: none;
+}
+
+input.input {
+  -moz-appearance: textfield;
+}
+
+.pass {display: flex;}
+
+.errors {
+  position: relative;
+  bottom: 15px;
+}

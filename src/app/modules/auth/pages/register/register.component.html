@@ -1,0 +1,20 @@
+<div class="register">
+  <h2>Register</h2>
+  <form appearance="fill" [formGroup]="registerForm" (ngSubmit)="registerSubmitted()">
+    <div class="userdetails" formGroupName="userDetails">
+      <h3>User Info</h3>
+      <div class="subform">
+        <app-text-input formControlName="firstName" type="text" label="First Name"></app-text-input>
+        <app-text-input formControlName="lastName" type="text" label="Last Name"></app-text-input>
+        <app-text-input formControlName="email" type="email" label="Email"></app-text-input>
+        <app-text-input formControlName="password" type="password" label="Password"></app-text-input>
+        <app-text-input formControlName="confirmpassword" type="password" label="Confirm Password"></app-text-input>
+        <app-text-input formControlName="userName" type="text" label="Username"></app-text-input>
+      </div>
+    </div>
+    <app-address-form [formGroup]="registerForm"></app-address-form>
+    <div class="button">
+      <button type="submit" mat-raised-button color="primary" [disabled]="!registerForm.valid">Submit</button>
+    </div>
+  </form>
+</div>

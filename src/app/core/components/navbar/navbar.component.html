@@ -1,0 +1,44 @@
+<mat-toolbar color="primary">
+  <div class="container">
+
+    <a routerLink="/" class="logo">
+      <img src="/assets/images/shoe.png" alt="shoe logo" />
+    </a>
+
+    <div class="search">
+      <div class="input-btn">
+        <input type="text" placeholder="Type product Here" />
+        <button>Search</button>
+      </div>
+    </div>
+
+    <div class="routes-cart">
+      <div class="routes">
+        <a [routerLink]="['/auth/register']" routerLinkActive="active" >Register</a>
+        <a [routerLink]="['/auth/login']" routerLinkActive="active" >Login</a>
+        <div class="cart-icon">
+          <mat-icon>shopping_cart</mat-icon>
+          <span>1</span>
+        </div>
+      </div>
+    </div>
+    <!-- *ngIf="(authService.getToken() | async)" -->
+    <div class="menu">
+      <mat-icon [matMenuTriggerFor]="menu">dehaze</mat-icon>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="openAddressDialog()">Setup Your Address</button>
+        <button mat-menu-item>Logout</button>
+      </mat-menu>
+    </div>
+  </div>
+</mat-toolbar>
+
+<ng-template #addressDialog>
+  <h1 mat-dialog-title>Add/Update Address</h1>
+  <div mat-dialog-content>
+    <app-address-form [formGroup]="addressForm"></app-address-form>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button mat-raised-button color="primary" (click)="submitAddress()">Submit</button>
+  </div>
+</ng-template>

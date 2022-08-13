@@ -1,0 +1,10 @@
+.subform {
+  display: flex;
+  justify-content: flex-start;
+  gap: 2%;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  app-text-input {
+    flex: 0 0 31%;
+  }
+}

@@ -1,0 +1,8 @@
+<div class="login">
+  <h2>Login Now</h2>
+  <form appearance="fill" [formGroup]="loginForm" (ngSubmit)="loginSubmitted()">
+    <app-text-input formControlName="email" type="email" label="Email"></app-text-input>
+    <app-text-input formControlName="password" type="password" label="Password"></app-text-input>
+    <button type="submit" mat-raised-button color="primary" [disabled]="!loginForm.valid">Submit</button>
+  </form>
+</div>

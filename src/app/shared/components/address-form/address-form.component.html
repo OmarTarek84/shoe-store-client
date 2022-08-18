@@ -4,11 +4,8 @@
       <app-text-input *ngIf="formGroup.get('address')?.controls['firstName']" formControlName="firstName" type="text" label="First Name"></app-text-input>
       <app-text-input *ngIf="formGroup.get('address')?.controls['lastName']" formControlName="lastName" type="text" label="Last Name"></app-text-input>
       <app-text-input formControlName="street" type="text" label="Street"></app-text-input>
-      <mat-select-country appearance="standard"
-                          label="Country"
-                          formControlName="country">
-      </mat-select-country>
-      <app-text-input formControlName="city" type="text" label="City"></app-text-input>
+      <app-select-input formControlName="country" (selectInputChanged)="countryChanged($event)" [label]="'Country'" [options]="countriesList"></app-select-input>
+      <app-select-input formControlName="city" [label]="'City'" [options]="cities"></app-select-input>
       <app-text-input formControlName="zipCode" type="text" label="ZipCode"></app-text-input>
     </div>
   </div>

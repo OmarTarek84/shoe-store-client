@@ -8,10 +8,11 @@ import {MatIconModule} from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { AddressFormComponent } from './components/address-form/address-form.component';
-import { MatSelectCountryModule } from '@angular-material-extensions/select-country';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
+import { SelectInputComponent } from './components/select-input/select-input.component';
+import {MatSelectModule} from '@angular/material/select';
 
 const modules = [
   MatSnackBarModule,
@@ -19,19 +20,19 @@ const modules = [
   MatIconModule,
   MatInputModule,
   MatButtonModule,
-  MatSelectCountryModule,
   MatIconModule,
   MatMenuModule,
   MatToolbarModule,
-  MatSnackBarModule,
   MatDialogModule,
+  MatSelectModule
 ];
 
 
 @NgModule({
   declarations: [
     TextInputComponent,
-    AddressFormComponent
+    AddressFormComponent,
+    SelectInputComponent
   ],
   imports: [
     CommonModule,
@@ -39,6 +40,6 @@ const modules = [
     ReactiveFormsModule,
     modules
   ],
-  exports: [modules,TextInputComponent,AddressFormComponent,FormsModule,ReactiveFormsModule]
+  exports: [modules,TextInputComponent,SelectInputComponent,AddressFormComponent,FormsModule,ReactiveFormsModule]
 })
 export class SharedModule { }

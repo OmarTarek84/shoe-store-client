@@ -4,13 +4,14 @@ import { LoginDto } from './../../modules/auth/models/loginDto';
 import { environment } from './../../../environments/environment';
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { map, Observable, of, ReplaySubject } from "rxjs";
+import { map, Observable, of, ReplaySubject, take } from "rxjs";
 import { UserOutDto } from "../models/user";
+import { AddressInDto, AddressOutDto } from '../models/address';
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
 
-  private token$ = new Observable<string>();
+  private token: string = '';
 
   private currentUserSource = new ReplaySubject<UserOutDto | null>(1);
   currentUser$ = this.currentUserSource.asObservable();
@@ -24,7 +25,7 @@ export class AuthService {
   }
 
   getToken() {
-    return this.token$ || localStorage.getItem('token');
+    return this.token || localStorage.getItem('token');
   }
 
   login(loginDto: LoginDto) {
@@ -38,19 +39,20 @@ export class AuthService {
   }
 
   register(registerinDto: RegisterDto) {
-    this.http.post<AuthOutDto>(environment.appUrl + 'api/Auth/Register', registerinDto).pipe(
+    return this.http.post<AuthOutDto>(environment.appUrl + 'api/Auth/Register', registerinDto).pipe(
       map((auth: AuthOutDto) => {
         if (auth) {
-          this.setUserCredsAndDetails(auth);
+          this.token = auth.token;
+          localStorage.setItem('token', auth.token);
         }
       })
     );
   }
 
   setUserCredsAndDetails(auth: AuthOutDto) {
-    this.token$ = of(auth.token);
+    this.token = auth.token;
     localStorage.setItem('token', auth.token);
-    this.getUser();
+    this.getUser().pipe(take(1)).subscribe();
   }
 
   logout() {
@@ -60,6 +62,15 @@ export class AuthService {
 
   emailExists(email: string): Observable<boolean> {
     return this.http.get<boolean>(environment.appUrl + `api/Auth/email-exists?email=${email}`);
+  }
+
+  insertOrUpdateAddress(address: AddressInDto) {
+    return this.http.post<AddressOutDto>(environment.appUrl + "api/Auth/address", address).pipe(
+      map((res: AddressOutDto) => {
+        this.getUser().pipe(take(1)).subscribe();
+        return res;
+      })
+    );
   }
 
 }

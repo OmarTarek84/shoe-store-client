@@ -1,8 +1,8 @@
+import { Router } from '@angular/router';
 import { AuthService } from './../../../../shared/services/auth.service';
 import { FormGroup, FormBuilder, Validators, ValidatorFn, AbstractControl, AsyncValidatorFn } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { catchError, map, of, switchMap, timer, throwError } from 'rxjs';
-import { Country } from '@angular-material-extensions/select-country';
 import { AddressInDto } from './../../../../shared/models/address';
 
 @Component({
@@ -14,7 +14,7 @@ export class RegisterComponent implements OnInit {
 
   registerForm!: FormGroup;
 
-  constructor(private fb: FormBuilder, private authService: AuthService) { }
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
     this.registerForm = this.fb.group({
@@ -68,17 +68,17 @@ export class RegisterComponent implements OnInit {
   }
 
   registerSubmitted() {
-    const countryDetails = (this.registerForm.get('address')?.get('country')?.value) as Country;
-
     const registerInDtoValue = this.registerForm.get('userDetails')?.value;
     const addressValue: AddressInDto = {
       ...this.registerForm.get('address')?.value,
-      country: countryDetails.name,
       firstName: this.registerForm.get('userDetails')?.value?.firstName,
       lastName: this.registerForm.get('userDetails')?.value?.lastName,
     };
-    console.log('registerInDtoValue',registerInDtoValue);
-    console.log('addressValue',addressValue);
+    this.authService.register(registerInDtoValue).pipe(
+      switchMap(() => {
+        return this.authService.insertOrUpdateAddress(addressValue)
+      })
+    ).subscribe(() => this.router.navigate(['/']));
 
   }
 

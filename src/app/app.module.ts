@@ -6,7 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatSelectCountryModule } from "@angular-material-extensions/select-country";
+import { NgxSpinnerModule } from 'ngx-spinner';
 @NgModule({
   declarations: [
     AppComponent,
@@ -17,7 +17,7 @@ import { MatSelectCountryModule } from "@angular-material-extensions/select-coun
     CoreModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    MatSelectCountryModule.forRoot('en')
+    NgxSpinnerModule.forRoot({ type: 'square-jelly-box' })
   ],
   providers: [],
   bootstrap: [AppComponent]

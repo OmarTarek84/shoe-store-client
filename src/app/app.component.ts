@@ -1,3 +1,4 @@
+import { take } from 'rxjs';
 import { AuthService } from './shared/services/auth.service';
 import { Component, OnInit } from '@angular/core';
 
@@ -16,7 +17,7 @@ export class AppComponent implements OnInit {
   }
 
   loadUser() {
-    this.authService.getUser();
+    this.authService.getUser().pipe(take(1)).subscribe();
   }
 
 }

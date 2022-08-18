@@ -9,7 +9,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-
+import { LoaderInterceptor } from './interceptors/loader.interceptor';
 @NgModule({
   declarations: [
     NotFoundComponent,
@@ -25,6 +25,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true},
   ]
 })
 export class CoreModule { }

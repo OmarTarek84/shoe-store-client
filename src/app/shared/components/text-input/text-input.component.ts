@@ -8,7 +8,7 @@ import { ControlValueAccessor, NgControl } from '@angular/forms';
 })
 export class TextInputComponent implements OnInit, ControlValueAccessor {
 
-  @ViewChild("input", {static: true}) input!: ElementRef;
+  @ViewChild("input", {static: false}) input!: ElementRef;
   @Input() type: string = 'text';
   @Input() label: string = 'string';
   hide = true;

@@ -14,19 +14,24 @@
 
     <div class="routes-cart">
       <div class="routes">
-        <a [routerLink]="['/auth/register']" routerLinkActive="active" >Register</a>
-        <a [routerLink]="['/auth/login']" routerLinkActive="active" >Login</a>
+        <ng-container *ngIf="!authService.getToken()">
+          <a [routerLink]="['/auth/register']" routerLinkActive="active" >Register</a>
+          <a [routerLink]="['/auth/login']" routerLinkActive="active" >Login</a>
+        </ng-container>
+        <ng-container *ngIf="authService.getToken()">
+          <a [routerLink]="['/orders']" routerLinkActive="active" >Orders</a>
+        </ng-container>
         <div class="cart-icon">
           <mat-icon>shopping_cart</mat-icon>
           <span>1</span>
         </div>
       </div>
     </div>
-    <!-- *ngIf="(authService.getToken() | async)" -->
-    <div class="menu">
+    <div class="menu" *ngIf="authService.getToken()">
       <mat-icon [matMenuTriggerFor]="menu">dehaze</mat-icon>
       <mat-menu #menu="matMenu">
         <button mat-menu-item (click)="openAddressDialog()">Setup Your Address</button>
+        <a mat-menu-item routerLink="/profile">Profile</a>
         <button mat-menu-item>Logout</button>
       </mat-menu>
     </div>
@@ -36,7 +41,9 @@
 <ng-template #addressDialog>
   <h1 mat-dialog-title>Add/Update Address</h1>
   <div mat-dialog-content>
-    <app-address-form [formGroup]="addressForm"></app-address-form>
+    <form [formGroup]="addressForm">
+      <app-address-form [formGroup]="addressForm"></app-address-form>
+    </form>
   </div>
   <div mat-dialog-actions>
     <button mat-button mat-raised-button color="primary" (click)="submitAddress()">Submit</button>

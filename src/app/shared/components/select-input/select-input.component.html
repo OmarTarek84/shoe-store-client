@@ -1,0 +1,12 @@
+<div class="select-input">
+  <mat-form-field appearance="fill">
+    <mat-label>{{label}}</mat-label>
+    <mat-select #selectInput
+                (selectionChange)="onChange(selectInput.value)"
+                (valueChange)="inputChanged(selectInput.value)">
+      <mat-option *ngFor="let option of options" [value]="value || option">
+        {{displayValue ? option[displayValue]: option}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>

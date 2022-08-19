@@ -21,6 +21,12 @@ $ShoeStore-client-theme: mat.define-light-theme((
 
 @include mat.all-component-themes($ShoeStore-client-theme);
 
+*,
+*::before,
+*::after {
+  margin: 0;
+}
+
 html, body { height: 100%; background-color: #f8f8f8; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 p { margin: 0; }

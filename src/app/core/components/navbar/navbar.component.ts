@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { take } from 'rxjs';
 import { UserOutDto } from './../../../shared/models/user';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -19,7 +20,7 @@ export class NavbarComponent implements OnInit {
   dialogRef!: MatDialogRef<any>;
   user!: UserOutDto | null;
 
-  constructor(public authService: AuthService,private dialog: MatDialog, private fb: FormBuilder) { }
+  constructor(public authService: AuthService,private dialog: MatDialog, private fb: FormBuilder, private router: Router) { }
 
   ngOnInit(): void {
     this.addressForm = this.fb.group({
@@ -52,6 +53,10 @@ export class NavbarComponent implements OnInit {
         this.dialogRef.close();
       }
     });
+  }
 
+  logout() {
+    this.authService.logout();
+    this.router.navigateByUrl('/auth/login');
   }
 }

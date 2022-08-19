@@ -11,6 +11,9 @@ export class TextInputComponent implements OnInit, ControlValueAccessor {
   @ViewChild("input", {static: false}) input!: ElementRef;
   @Input() type: string = 'text';
   @Input() label: string = 'string';
+
+  inputDisabled = false;
+
   hide = true;
 
   constructor(@Self() public controlDir: NgControl) {
@@ -29,7 +32,7 @@ export class TextInputComponent implements OnInit, ControlValueAccessor {
     this.onTouched = fn;
   }
   setDisabledState?(isDisabled: boolean): void {
-    throw new Error('Method not implemented.');
+    this.inputDisabled = isDisabled;
   }
 
   onChange(event: Event) {}

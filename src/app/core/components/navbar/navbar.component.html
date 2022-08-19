@@ -2,7 +2,7 @@
   <div class="container">
 
     <a routerLink="/" class="logo">
-      <img src="/assets/images/shoe.png" alt="shoe logo" />
+      <span><em>ShoeStore</em></span>
     </a>
 
     <div class="search">
@@ -31,8 +31,8 @@
       <mat-icon [matMenuTriggerFor]="menu">dehaze</mat-icon>
       <mat-menu #menu="matMenu">
         <button mat-menu-item (click)="openAddressDialog()">Setup Your Address</button>
-        <a mat-menu-item routerLink="/profile">Profile</a>
-        <button mat-menu-item>Logout</button>
+        <a mat-menu-item routerLink="/auth/profile">Profile</a>
+        <button mat-menu-item (click)="logout()">Logout</button>
       </mat-menu>
     </div>
   </div>

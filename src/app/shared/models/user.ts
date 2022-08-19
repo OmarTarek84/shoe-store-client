@@ -7,5 +7,5 @@ export interface UserOutDto {
   email: string;
   cartItemsCount: number;
   address: AddressOutDto;
-  pJoinedAt: Date;
+  joinedAt: Date;
 }

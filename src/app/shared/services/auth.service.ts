@@ -7,6 +7,8 @@ import { Injectable } from "@angular/core";
 import { map, Observable, of, ReplaySubject, take } from "rxjs";
 import { UserOutDto } from "../models/user";
 import { AddressInDto, AddressOutDto } from '../models/address';
+import { ChangePasswordDto } from './../../modules/auth/models/changePasswordDto';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
@@ -16,7 +18,7 @@ export class AuthService {
   private currentUserSource = new ReplaySubject<UserOutDto | null>(1);
   currentUser$ = this.currentUserSource.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,private _snackBar: MatSnackBar) {}
 
   getUser() {
     return this.http.get<UserOutDto>(environment.appUrl + 'api/Auth/user').pipe(
@@ -58,6 +60,7 @@ export class AuthService {
   logout() {
     localStorage.removeItem('token');
     this.currentUserSource.next(null);
+    this.token = '';
   }
 
   emailExists(email: string): Observable<boolean> {
@@ -68,6 +71,15 @@ export class AuthService {
     return this.http.post<AddressOutDto>(environment.appUrl + "api/Auth/address", address).pipe(
       map((res: AddressOutDto) => {
         this.getUser().pipe(take(1)).subscribe();
+        return res;
+      })
+    );
+  }
+
+  changePassword(changePasswordDto: ChangePasswordDto) {
+    return this.http.patch<boolean>(environment.appUrl + "api/Auth/reset-password", changePasswordDto).pipe(
+      map((res: boolean) => {
+        if (res) this._snackBar.open('Password Changed', 'Close');
         return res;
       })
     );

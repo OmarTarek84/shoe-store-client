@@ -13,10 +13,12 @@
     height: 100%;
     display: flex;
     align-items: center;
-    img {
-      width: 100%;
-      max-width: 250px;
-      height: 80%;
+    text-decoration: none;
+    span {
+      text-decoration: none;
+      cursor: pointer;
+      color: white;
+      font-weight: 500;
     }
   }
 

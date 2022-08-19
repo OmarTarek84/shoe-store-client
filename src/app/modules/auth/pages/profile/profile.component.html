@@ -1,0 +1,26 @@
+<h2>Profile Settings</h2>
+<div class="card-details">
+  <div class="card">
+    <mat-card class="example-card">
+      <mat-card-header>
+        <mat-card-title>{{user?.firstName}} {{user?.lastName}}</mat-card-title>
+        <mat-card-subtitle>@{{user?.userName}}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>Joined At <span class="boldtext">{{user?.joinedAt | date: 'dd/MM/yyyy'}}</span></p>
+        <hr />
+        <p>Lives in <span class="boldtext">{{user?.address?.street}}, {{user?.address?.city}}, {{user?.address?.country}}</span></p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <form class="details" [formGroup]="profileForm" (ngSubmit)="changePasswordSubmit()">
+    <app-text-input formControlName="email" [label]="'Email'"></app-text-input>
+    <app-text-input formControlName="zipCode" [label]="'Zip Code'"></app-text-input>
+    <app-text-input formControlName="currentPassword" type="password" [label]="'Current Password'"></app-text-input>
+    <app-text-input formControlName="newPassword" type="password" [label]="'New Password'"></app-text-input>
+    <app-text-input formControlName="confirmPassword" type="password" [label]="'Confirm Password'"></app-text-input>
+    <div class="submit-btn">
+      <button type="submit" mat-raised-button color="primary" [disabled]="!profileForm.valid">Submit</button>
+    </div>
+  </form>
+</div>

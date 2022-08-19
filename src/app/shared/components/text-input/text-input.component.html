@@ -5,6 +5,7 @@
            matInput
            #input
            class="input"
+           [disabled]="inputDisabled"
            (input)="onChange($event.target?.value)"
            (blur)="onTouched()"
            [placeholder]="label" />
@@ -15,6 +16,7 @@
            matInput
            class="input"
            #input
+           [disabled]="inputDisabled"
            (input)="onChange($event.target?.value)"
            (blur)="onTouched()"
            [placeholder]="label" />

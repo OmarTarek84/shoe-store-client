@@ -1,0 +1,29 @@
+<div class="filters-parent">
+  <div class="brands">
+    <h3>Brands</h3>
+    <div class="brands-list">
+      <mat-radio-group aria-label="Select a brand" [(ngModel)]="brandId" (change)="brandChanged($event)">
+        <mat-radio-button [checked]="true" [value]="0">All</mat-radio-button>
+        <ng-container *ngFor="let brand of (productService.brands$ | async) as brands">
+          <mat-radio-button [value]="brand.id">{{brand.name}}</mat-radio-button>
+        </ng-container>
+      </mat-radio-group>
+    </div>
+  </div>
+  <div class="prices">
+    <h3>Price</h3>
+    <div class="from-to">
+      <mat-form-field appearance="standard">
+        <mat-label>From Price</mat-label>
+        <input matInput [(ngModel)]="fromPrice" type="number" step=".01" (change)="fromPriceChanged($event.target.value)" />
+      </mat-form-field>
+      <mat-form-field appearance="standard">
+        <mat-label>To Price</mat-label>
+        <input [(ngModel)]="toPrice" matInput type="number" step=".01" (change)="toPriceChanged($event.target.value)" />
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="btn">
+    <button type="button" mat-raised-button color="warn" (click)="clearFilter()">Clear Filter</button>
+  </div>
+</div>

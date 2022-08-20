@@ -32,4 +32,5 @@
 <div class="errors" *ngIf="(controlDir?.control?.dirty)">
   <mat-error *ngIf="controlDir?.control?.errors?.isMatching">Passwords do not match</mat-error>
   <mat-error *ngIf="controlDir?.control?.errors?.emailExists">Email Already Exists</mat-error>
+  <mat-error *ngIf="controlDir?.control?.errors?.weakPassword">Password must contain one upper case, one lower case, one digit and at least 8 characters</mat-error>
 </div>

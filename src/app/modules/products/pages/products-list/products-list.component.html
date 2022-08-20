@@ -1,0 +1,14 @@
+<mat-paginator [length]="productService.getProductPaginator().count"
+              [pageSize]="productService.getProductPaginator().pageSize"
+              [pageIndex]="productService.getProductPaginator().pageNumber - 1"
+              (page)="pageChanged($event)"
+              [pageSizeOptions]="[5, 7, 10, 15]">
+</mat-paginator>
+<div class="prods-parent">
+  <app-product-filters></app-product-filters>
+  <div class="products-list">
+    <ng-container *ngFor="let product of (productService.products$ | async) as products">
+      <app-product-card [product]="product"></app-product-card>
+    </ng-container>
+  </div>
+</div>

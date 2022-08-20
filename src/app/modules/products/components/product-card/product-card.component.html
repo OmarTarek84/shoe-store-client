@@ -1,0 +1,21 @@
+<mat-card>
+  <mat-card-header (click)="goToProductDetail()">
+    <mat-card-title>{{product.name}}</mat-card-title>
+    <mat-card-subtitle>{{product.brandName}}</mat-card-subtitle>
+  </mat-card-header>
+  <img (click)="goToProductDetail()" mat-card-image src="{{product.image}}" alt="{{product.name}}">
+  <mat-card-content>
+    <p class="desc">{{product.description}}</p>
+    <hr />
+    <div class="review">
+      <star-rating staticColor="ok" [readOnly]="true" [step]="0.5" [showHalfStars]="true" [starType]="'svg'" [rating]="product.avgRating"></star-rating>
+      <p><strong>{{product.numberOfReviews}}</strong> reviews</p>
+    </div>
+    <hr />
+    <span *ngIf="product.priceAfterDiscount != product.originalPrice" class="original-price">${{product.originalPrice}}</span>
+    <h4>${{product.priceAfterDiscount}}</h4>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button color="primary">Add To Cart</button>
+  </mat-card-actions>
+</mat-card>

@@ -22,7 +22,7 @@ export class ProfileComponent implements OnInit, AfterViewInit, AfterViewChecked
       userName: [{value: null, disabled: true}],
       zipCode: [{value: null, disabled: true}],
       currentPassword: [null, [Validators.required]],
-      newPassword: [null, [Validators.required]],
+      newPassword: [null, [Validators.required, this.validatePassword()]],
       confirmPassword: [null, [Validators.required, this.matchValues('newPassword')]],
     });
 
@@ -37,6 +37,13 @@ export class ProfileComponent implements OnInit, AfterViewInit, AfterViewChecked
         zipCode: user?.address.zipCode,
       });
     });
+  }
+
+  validatePassword(): ValidatorFn {
+    return (control: AbstractControl) => {
+      const isValid = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/.test(control.value);
+      return isValid ? null: {weakPassword: true}
+    }
   }
 
   ngAfterViewChecked(): void {

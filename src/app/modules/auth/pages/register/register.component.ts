@@ -25,7 +25,7 @@ export class RegisterComponent implements OnInit {
           [Validators.required, Validators.email],
           [this.emailAlreadyExists()]
         ],
-        password: [null, [Validators.required]],
+        password: [null, [Validators.required, this.validatePassword()]],
         confirmpassword: [null, [Validators.required, this.matchValues("password")]],
         firstName: [null, [Validators.required]],
         lastName: [null, [Validators.required]],
@@ -45,6 +45,13 @@ export class RegisterComponent implements OnInit {
     return (control: AbstractControl) => {
       return control?.value === control?.parent?.get(matchTo)?.value
         ? null : {isMatching: true}
+    }
+  }
+
+  validatePassword(): ValidatorFn {
+    return (control: AbstractControl) => {
+      const isValid = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/.test(control.value);
+      return isValid ? null: {weakPassword: true}
     }
   }
 

@@ -1,0 +1,46 @@
+mat-paginator {
+  margin-top: 20px;
+}
+
+.prods-parent {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  padding-top: 30px;
+  app-product-filters {
+    flex: 0 0 22%;
+    @media screen and (max-width: 991px) {
+      flex: 0 0 28%;
+    }
+    @media screen and (max-width: 767px) {
+      flex: 0 0 35%;
+    }
+    @media screen and (max-width: 600px) {
+      flex: 0 0 80%;
+    }
+  }
+  .products-list {
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+    gap: 15px;
+    flex-wrap: wrap;
+    @media screen and (max-width: 600px) {
+      flex: 0 0 100%;
+    }
+    app-product-card {
+      max-width: 31%;
+      @media screen and (max-width: 1000px) {
+        max-width: 48%;
+      }
+      @media screen and (max-width: 665px) {
+        max-width: 70%;
+      }
+      @media screen and (max-width: 600px) {
+        max-width: 48%;
+      }
+      flex: 0 0 100%;
+    }
+  }
+}

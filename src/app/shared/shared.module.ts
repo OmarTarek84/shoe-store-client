@@ -14,6 +14,9 @@ import { MatMenuModule } from '@angular/material/menu';
 import { SelectInputComponent } from './components/select-input/select-input.component';
 import {MatSelectModule} from '@angular/material/select';
 import {MatCardModule} from '@angular/material/card';
+import {MatRadioModule} from '@angular/material/radio';
+import {MatPaginatorModule} from '@angular/material/paginator';
+
 
 const modules = [
   MatSnackBarModule,
@@ -26,7 +29,9 @@ const modules = [
   MatToolbarModule,
   MatDialogModule,
   MatCardModule,
-  MatSelectModule
+  MatSelectModule,
+  MatPaginatorModule,
+  MatRadioModule
 ];
 
 

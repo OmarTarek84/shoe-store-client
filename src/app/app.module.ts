@@ -7,6 +7,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { StarRatingModule } from 'angular-star-rating';
 @NgModule({
   declarations: [
     AppComponent,
@@ -17,6 +18,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     CoreModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    StarRatingModule.forRoot(),
     NgxSpinnerModule.forRoot({ type: 'square-jelly-box' })
   ],
   providers: [],

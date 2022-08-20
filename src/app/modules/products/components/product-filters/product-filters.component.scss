@@ -1,0 +1,45 @@
+.filters-parent {
+  border-radius: 7px;
+  padding: 10px;
+  box-shadow: 1px 1px 8px 1px grey;
+  @media screen and (max-width: 600px) {
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+  }
+  .brands {
+    margin: 10px 0;
+    h3 {
+
+    }
+    .brands-list {
+      margin-top: 10px;
+      &::ng-deep {
+        .mat-radio-group {
+          display: flex;
+          flex-direction: column;
+          .mat-radio-button {
+            margin-top: 5px;
+          }
+        }
+      }
+    }
+  }
+  .prices {
+    margin-top: 24px;
+    @media screen and (max-width: 600px) {
+      margin-top: 10px;
+    }
+    .from-to {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+  .btn {
+    @media screen and (max-width: 600px) {
+      flex: 0 0 100%;
+      display: flex;
+      justify-content: center;
+    }
+  }
+}

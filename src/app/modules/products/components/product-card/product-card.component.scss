@@ -1,0 +1,21 @@
+hr {
+  margin: 3px 0;
+}
+mat-card-header {
+  cursor: pointer;
+}
+img {
+  cursor: pointer;
+}
+
+.original-price {
+  text-decoration: line-through;
+}
+
+.review {
+  display: flex;
+  align-items: center;
+  star-rating {
+    display: flex;
+  }
+}

@@ -6,10 +6,10 @@
     </a>
 
     <div class="search">
-      <div class="input-btn">
-        <input type="text" placeholder="Type product Here" />
-        <button>Search</button>
-      </div>
+      <form class="input-btn">
+        <input type="text" [(ngModel)]="productName" [ngModelOptions]="{standalone: true}" placeholder="Type product Here" />
+        <button type="submit" (click)="productNameChanged()">Search</button>
+      </form>
     </div>
 
     <div class="routes-cart">

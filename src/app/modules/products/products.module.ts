@@ -1,17 +1,27 @@
+import { StarRatingModule } from 'angular-star-rating';
+import { SharedModule } from './../../shared/shared.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ProductsComponent } from './products.component';
 import { ProductsRoutingModule } from './products-routing.module';
+import { ProductsListComponent } from './pages/products-list/products-list.component';
+import { ProductComponent } from './pages/product/product.component';
+import { ProductFiltersComponent } from './components/product-filters/product-filters.component';
+import { ProductCardComponent } from './components/product-card/product-card.component';
 
 
 
 @NgModule({
   declarations: [
-    ProductsComponent
+    ProductsListComponent,
+    ProductComponent,
+    ProductFiltersComponent,
+    ProductCardComponent
   ],
   imports: [
     CommonModule,
-    ProductsRoutingModule
+    SharedModule,
+    ProductsRoutingModule,
+    StarRatingModule
   ]
 })
 export class ProductsModule { }

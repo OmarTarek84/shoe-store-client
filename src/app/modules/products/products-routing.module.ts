@@ -1,9 +1,17 @@
-import { ProductsComponent } from './products.component';
+import { ProductsListComponent } from './pages/products-list/products-list.component';
 import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from "@angular/core";
+import { ProductComponent } from './pages/product/product.component';
 
 const routes: Routes = [
-  {path: '', component: ProductsComponent}
+  {
+    path: '',
+    component: ProductsListComponent,
+  },
+  {
+    path: ':id',
+    component: ProductComponent
+  }
 ];
 
 @NgModule({

@@ -1,1 +1,58 @@
-<p>product works!</p>
+<ng-container *ngIf="(productService.product$ | async) as product; else noproduct">
+  <div class="product-details">
+    <div class="image">
+      <img [src]="product.image" [alt]="product.name" />
+    </div>
+    <div class="details">
+      <h3>{{product.name}}</h3>
+      <p class="description">{{product.description}}</p>
+      <div class="box-cart">
+        <div class="feature">
+          <span class="title">Brand</span>
+          <span class="desc">{{product.brandName}}</span>
+        </div>
+        <div class="feature">
+          <span class="title">Price</span>
+          <span class="desc">${{product.priceAfterDiscount}}</span>
+        </div>
+        <div class="feature">
+          <span class="title">Reviews</span>
+          <span class="desc rating">
+            <star-rating staticColor="ok" [readOnly]="true" [step]="0.5" [showHalfStars]="true" [starType]="'svg'" [rating]="product.avgRating"></star-rating>
+            <p><strong>{{product.numberOfReviews}}</strong> reviews</p>
+          </span>
+        </div>
+        <div class="feature">
+          <span class="title">Quantity</span>
+          <mat-form-field appearance="fill">
+            <mat-select [(value)]="cartQuantity">
+              <mat-option *ngFor='let num of counter(20) ;let i = index' [value]="i+1">{{i + 1}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <button class="addtocart" type="button">add to cart</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="reviews">
+    <div class="rev-list">
+      <h2>Reviews</h2>
+      <ng-container *ngFor="let review of product.reviews">
+        <app-review-box [review]="review"></app-review-box>
+      </ng-container>
+    </div>
+    <form class="review-form" [formGroup]="reviewForm">
+      <h3>Write a Review</h3>
+      <app-select-input formControlName="rating" [label]="'Rating'" [options]="ratingList"></app-select-input>
+      <app-text-input formControlName="comment" [label]="'Comment'" [placeholder]="'Write a comment Here'"></app-text-input>
+      <div class="btn-submit">
+        <button type="submit">Submit Review</button>
+      </div>
+    </form>
+  </div>
+</ng-container>
+
+<ng-template #noproduct>
+  <h3 class="no-prod">No Product Found!</h3>
+</ng-template>

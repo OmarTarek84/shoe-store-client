@@ -6,4 +6,5 @@ export interface ReviewOutDto {
   userName: string;
   userEmail: string;
   productId: number;
+  createDate: Date;
 }

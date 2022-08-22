@@ -1,0 +1,21 @@
+.review-box {
+  background-color: #dcdcdc;
+  border-radius: 4px;
+  padding: 14px 5px;
+  margin-top: 15px;
+  h5 {
+    margin-bottom: 8px;
+  }
+  .rating {
+    display: flex;
+    justify-content: flex-start;
+  }
+  span.review-date {
+    display: block;
+    font-size: 16px;
+  }
+  p.comment {
+    margin-top: 16px;
+    font-size: 14px;
+  }
+}

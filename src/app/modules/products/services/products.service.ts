@@ -4,10 +4,11 @@ import { Pagination } from './../../../shared/models/pagination';
 import { HttpClient } from '@angular/common/http';
 import { ProductParams } from './../models/productParams';
 import { ProductOutDto } from './../models/productDto';
-import { BehaviorSubject, Observable, map } from 'rxjs';
+import { BehaviorSubject, Observable, map, take, of } from 'rxjs';
 import { Injectable } from "@angular/core";
 import { HttpParams } from '@angular/common/http';
 import { BrandOutDto } from '../models/BrandDto';
+import { ReviewOutDto } from '../models/reviewDto';
 
 @Injectable({providedIn: 'root'})
 export class ProductsService {
@@ -17,6 +18,9 @@ export class ProductsService {
 
   private brandSource = new BehaviorSubject<BrandOutDto[]>([]);
   brands$ = this.brandSource.asObservable();
+
+  private singleProductSource = new BehaviorSubject<ProductOutDto | undefined>(undefined);
+  product$ = this.singleProductSource.asObservable();
 
   private productParams = new ProductParams();
   private productPagination = new PaginationParams();
@@ -68,8 +72,27 @@ export class ProductsService {
     ).subscribe();
   }
 
+  getProduct(productId: number) {
+    this.products$.pipe(
+      take(1),
+      map((products: ProductOutDto[]) => {
+        const prod = products.find(p => p.id === productId);
+        if (prod) this.singleProductSource.next(prod);
+        else this.getProductFromAPI(productId);
+      })
+    ).subscribe()
+  }
+
+  getUserReview(productId: number) {
+    return this.http.get<ReviewOutDto>(environment.appUrl + 'api/Product/user-review?productId=' + productId).pipe(take(1));
+  }
+
   getProductPaginator(): PaginationParams {
     return this.productPagination;
+  }
+
+  private getProductFromAPI(prodId: number) {
+    return this.http.get<ProductOutDto>(environment.appUrl + 'api/Product/' + prodId).pipe(take(1)).subscribe(prod => this.singleProductSource.next(prod));
   }
 
   getBrands() {

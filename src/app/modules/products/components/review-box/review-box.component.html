@@ -1,0 +1,8 @@
+<div class="review-box">
+  <h5>{{review.userName}}</h5>
+  <div class="rating">
+    <star-rating staticColor="ok" [readOnly]="true" [step]="0.5" [showHalfStars]="true" [starType]="'svg'" [rating]="review.rating"></star-rating>
+  </div>
+  <span class="review-date">{{review.createDate | date: 'dd/MM/yyyy'}}</span>
+  <p class="comment">{{review.comment}}</p>
+</div>

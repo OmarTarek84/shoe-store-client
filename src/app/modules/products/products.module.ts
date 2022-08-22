@@ -7,6 +7,7 @@ import { ProductsListComponent } from './pages/products-list/products-list.compo
 import { ProductComponent } from './pages/product/product.component';
 import { ProductFiltersComponent } from './components/product-filters/product-filters.component';
 import { ProductCardComponent } from './components/product-card/product-card.component';
+import { ReviewBoxComponent } from './components/review-box/review-box.component';
 
 
 
@@ -15,7 +16,8 @@ import { ProductCardComponent } from './components/product-card/product-card.com
     ProductsListComponent,
     ProductComponent,
     ProductFiltersComponent,
-    ProductCardComponent
+    ProductCardComponent,
+    ReviewBoxComponent
   ],
   imports: [
     CommonModule,

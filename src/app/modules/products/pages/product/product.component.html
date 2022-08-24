@@ -1,4 +1,4 @@
-<ng-container *ngIf="(productService.product$ | async) as product; else noproduct">
+<ng-container *ngIf="product; else noproduct">
   <div class="product-details">
     <div class="image">
       <img [src]="product.image" [alt]="product.name" />
@@ -42,12 +42,12 @@
         <app-review-box [review]="review"></app-review-box>
       </ng-container>
     </div>
-    <form class="review-form" [formGroup]="reviewForm">
-      <h3>Write a Review</h3>
-      <app-select-input formControlName="rating" [label]="'Rating'" [options]="ratingList"></app-select-input>
+    <form class="review-form" [formGroup]="reviewForm" (ngSubmit)="reviewFormSubmitted()">
+      <h3>{{userHasReview ? 'Edit Your': 'Write a'}} Review</h3>
+      <app-select-input formControlName="rating" (selectInputChanged)="reviewChanged()" [label]="'Rating'" [options]="ratingList"></app-select-input>
       <app-text-input formControlName="comment" [label]="'Comment'" [placeholder]="'Write a comment Here'"></app-text-input>
       <div class="btn-submit">
-        <button type="submit">Submit Review</button>
+        <button type="submit" [disabled]="!reviewForm.valid">Submit Review</button>
       </div>
     </form>
   </div>

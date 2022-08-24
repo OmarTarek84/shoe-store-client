@@ -8,3 +8,10 @@ export interface ReviewOutDto {
   productId: number;
   createDate: Date;
 }
+
+
+export interface ReviewInDto {
+  rating: Rating;
+  comment: string | null;
+  productId: number;
+}

@@ -8,7 +8,7 @@ import { BehaviorSubject, Observable, map, take, of } from 'rxjs';
 import { Injectable } from "@angular/core";
 import { HttpParams } from '@angular/common/http';
 import { BrandOutDto } from '../models/BrandDto';
-import { ReviewOutDto } from '../models/reviewDto';
+import { ReviewInDto, ReviewOutDto } from '../models/reviewDto';
 
 @Injectable({providedIn: 'root'})
 export class ProductsService {
@@ -18,9 +18,6 @@ export class ProductsService {
 
   private brandSource = new BehaviorSubject<BrandOutDto[]>([]);
   brands$ = this.brandSource.asObservable();
-
-  private singleProductSource = new BehaviorSubject<ProductOutDto | undefined>(undefined);
-  product$ = this.singleProductSource.asObservable();
 
   private productParams = new ProductParams();
   private productPagination = new PaginationParams();
@@ -60,8 +57,6 @@ export class ProductsService {
     if (this.productParams.toPrice)
       prodParams = prodParams.append('toPrice', this.productParams.toPrice);
 
-      console.log(this.productParams);
-
     return this.http.get<Pagination<ProductOutDto>>(environment.appUrl + 'api/product', {params: prodParams}).pipe(
       map((res: Pagination<ProductOutDto>) => {
         this.productSource.next(res.list);
@@ -73,14 +68,13 @@ export class ProductsService {
   }
 
   getProduct(productId: number) {
-    this.products$.pipe(
+    return this.products$.pipe(
       take(1),
       map((products: ProductOutDto[]) => {
         const prod = products.find(p => p.id === productId);
-        if (prod) this.singleProductSource.next(prod);
-        else this.getProductFromAPI(productId);
+        return prod;
       })
-    ).subscribe()
+    )
   }
 
   getUserReview(productId: number) {
@@ -91,8 +85,12 @@ export class ProductsService {
     return this.productPagination;
   }
 
-  private getProductFromAPI(prodId: number) {
-    return this.http.get<ProductOutDto>(environment.appUrl + 'api/Product/' + prodId).pipe(take(1)).subscribe(prod => this.singleProductSource.next(prod));
+  getProductFromAPI(prodId: number) {
+    return this.http.get<ProductOutDto>(environment.appUrl + 'api/Product/' + prodId);
+  }
+
+  addReview(reviewInDto:ReviewInDto) {
+    return this.http.post<ReviewOutDto>(environment.appUrl + 'api/Product/add-review',reviewInDto);
   }
 
   getBrands() {

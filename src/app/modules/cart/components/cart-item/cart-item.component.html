@@ -1,0 +1,22 @@
+<div class="cart">
+    <button class="remove-cart" (click)="removeCart()">X</button>
+    <div class="cart-image">
+      <img [src]="cartItem.productImage" alt="image" />
+    </div>
+    <p class="product-name">{{cartItem.productName}}</p>
+    <div class="quantity">
+      <span class="title">Quantity</span>
+      <div class="quantity-details">
+        <button class="change-quantity" [disabled]="cartItem.quantity === 1" (click)="changeQuantity('dec')">-</button>
+        <span>{{cartItem.quantity}}</span>
+        <button class="change-quantity" (click)="changeQuantity('inc')">+</button>
+      </div>
+    </div>
+    <div class="subtotal">
+      <span class="title">SubTotal</span>
+      <span class="details">${{cartItem.subtotal}}</span>
+    </div>
+    <div class="remove-btn">
+      <button mat-raised-button color="warn">Remove</button>
+    </div>
+</div>

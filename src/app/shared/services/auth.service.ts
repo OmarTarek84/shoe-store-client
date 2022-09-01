@@ -4,7 +4,7 @@ import { LoginDto } from './../../modules/auth/models/loginDto';
 import { environment } from './../../../environments/environment';
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { map, Observable, of, ReplaySubject, take } from "rxjs";
+import { catchError, map, Observable, of, ReplaySubject, take } from "rxjs";
 import { UserOutDto } from "../models/user";
 import { AddressInDto, AddressOutDto } from '../models/address';
 import { ChangePasswordDto } from './../../modules/auth/models/changePasswordDto';
@@ -22,6 +22,10 @@ export class AuthService {
 
   getUser() {
     return this.http.get<UserOutDto>(environment.appUrl + 'api/Auth/user').pipe(
+      catchError((err) => {
+        this.logout();
+        return of(err);
+      }),
       map((user: UserOutDto) => this.currentUserSource.next(user))
     );
   }

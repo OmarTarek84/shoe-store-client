@@ -6,6 +6,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from './../../../shared/services/auth.service';
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   OnInit,
   TemplateRef,
@@ -33,7 +34,8 @@ export class NavbarComponent implements OnInit {
     private dialog: MatDialog,
     private productService: ProductsService,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private ref: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -51,6 +53,7 @@ export class NavbarComponent implements OnInit {
       .pipe(take(1))
       .subscribe((user: UserOutDto | null) => {
         this.user = user;
+        this.ref.detectChanges();
         if (this.user)
           this.addressForm.get('address')?.patchValue(this.user?.address);
       });

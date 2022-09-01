@@ -1,0 +1,15 @@
+h2 { text-align: center; }
+
+.no-orders {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 7%;
+  p {
+    font-size: 18px;
+  }
+}
+
+.orders-list {
+  margin-top: 13px;
+}

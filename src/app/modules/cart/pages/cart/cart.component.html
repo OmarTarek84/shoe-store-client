@@ -1,0 +1,7 @@
+<h2>Your cart</h2>
+<h3>Total Items: {{(cartService.cart$ | async).length}}</h3>
+<div class="cart-items">
+  <ng-container *ngFor="let cartitem of (cartService.cart$ | async)">
+    <app-cart-item [cartItem]="cartitem"></app-cart-item>
+  </ng-container>
+</div>

@@ -21,10 +21,10 @@
         <ng-container *ngIf="authService.getToken()">
           <a [routerLink]="['/orders']" routerLinkActive="active" >Orders</a>
         </ng-container>
-        <div class="cart-icon">
+        <a class="cart-icon" routerLink="/cart">
           <mat-icon>shopping_cart</mat-icon>
-          <span>1</span>
-        </div>
+          <span>{{user?.cartItemsCount}}</span>
+        </a>
       </div>
     </div>
     <div class="menu" *ngIf="authService.getToken()">

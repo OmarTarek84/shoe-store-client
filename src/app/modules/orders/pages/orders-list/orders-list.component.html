@@ -1,0 +1,23 @@
+<h2>Your orders</h2>
+<ng-container *ngIf="(orderService.orders$ | async).length > 0; else noOrders">
+  <div style="margin-top: 30px;"></div>
+  <mat-paginator [length]="orderService.getOrderPaginator().count"
+    [pageSize]="orderService.getOrderPaginator().pageSize"
+    [pageIndex]="orderService.getOrderPaginator().pageNumber - 1"
+    (page)="pageChanged($event)"
+    [pageSizeOptions]="[5, 7, 10, 15]">
+  </mat-paginator>
+<div class="orders-list">
+  <ng-container *ngFor="let order of (orderService.orders$ | async)">
+    <app-order-item [order]="order"></app-order-item>
+  </ng-container>
+</div>
+
+</ng-container>
+
+<ng-template #noOrders>
+  <div class="no-orders">
+    <p>You have no orders yet</p>
+    <a routerLink="/cart">Start shopping</a>
+  </div>
+</ng-template>

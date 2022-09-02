@@ -1,5 +1,5 @@
 <div class="cart">
-    <button class="remove-cart" (click)="removeCart()">X</button>
+    <!-- <button class="remove-cart" (click)="removeCart()">X</button> -->
     <div class="cart-image">
       <img [src]="cartItem.productImage" alt="image" />
     </div>
@@ -17,6 +17,6 @@
       <span class="details">${{cartItem.subtotal}}</span>
     </div>
     <div class="remove-btn">
-      <button mat-raised-button color="warn">Remove</button>
+      <button mat-raised-button color="warn" (click)="removeCart(cartItem.productId)">Remove</button>
     </div>
 </div>

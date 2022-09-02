@@ -2,6 +2,19 @@
 <h3>Total Items: {{(cartService.cart$ | async).length}}</h3>
 <div class="cart-items">
   <ng-container *ngFor="let cartitem of (cartService.cart$ | async)">
-    <app-cart-item [cartItem]="cartitem"></app-cart-item>
+    <app-cart-item (cartChange)="pricesChanged()" [cartItem]="cartitem"></app-cart-item>
   </ng-container>
+</div>
+
+<table class="subtotal-tax">
+  <tr>
+    <th>Subtotal: <span>${{subTotal.toFixed(2)}}</span></th>
+    <th>Tax: <span>${{tax.toFixed(2)}}</span></th>
+    <th>Total: <span>${{totalPrice.toFixed(2)}}</span></th>
+  </tr>
+</table>
+
+<div class="action-btns">
+  <a mat-raised-button color="primary" routerLink="/products">Continue Shopping</a>
+  <button mat-raised-button color="accent">Proceed To Checkout</button>
 </div>

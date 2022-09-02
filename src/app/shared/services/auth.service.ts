@@ -55,6 +55,10 @@ export class AuthService {
     );
   }
 
+  setUser(user: UserOutDto | null) {
+    this.currentUserSource.next(user);
+  }
+
   setUserCredsAndDetails(auth: AuthOutDto) {
     this.token = auth.token;
     localStorage.setItem('token', auth.token);

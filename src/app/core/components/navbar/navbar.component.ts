@@ -50,7 +50,6 @@ export class NavbarComponent implements OnInit {
       }),
     });
     this.authService.currentUser$
-      .pipe(take(1))
       .subscribe((user: UserOutDto | null) => {
         this.user = user;
         this.ref.detectChanges();

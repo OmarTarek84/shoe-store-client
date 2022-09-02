@@ -11,3 +11,37 @@ h3 {
 .cart-items {
   margin-top: 20px;
 }
+
+.subtotal-tax {
+  // text-align: right;
+  margin-left: auto;
+  tr {
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+  }
+  th {
+    color: rgb(140, 140, 140);
+    font-size: 20px;
+    text-transform: uppercase;
+    margin-right: 20px;
+    border-bottom: 1px solid grey;
+    padding-bottom: 6px;
+    margin-top: 14px;
+    span {
+      font-size: 20px;
+      color: rgb(0, 0, 0);
+      font-weight: 700;
+    }
+  }
+}
+
+.action-btns {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin-top: 40px;
+  a, button {
+    flex: 0 0 30%;
+  }
+}

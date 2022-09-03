@@ -18,7 +18,7 @@ const routes: Routes = [
   {
     path: 'cart',
     loadChildren: () => import('./modules/cart/cart.module').then(p => p.CartModule),
-    canActivate: [LoggedInGuard]
+    // canActivate: [LoggedInGuard]
   },
   {path: 'not-found', component: NotFoundComponent},
   {path: "**", redirectTo: '', pathMatch: 'full'}

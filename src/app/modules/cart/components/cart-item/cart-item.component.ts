@@ -1,3 +1,4 @@
+import { AuthService } from './../../../../shared/services/auth.service';
 import { catchError, of, map } from 'rxjs';
 import { CartService } from './../../services/cart.service';
 import { CartItemOutDto } from './../../models/cartDto';
@@ -13,16 +14,37 @@ export class CartItemComponent implements OnInit {
   @Input() cartItem!: CartItemOutDto;
   @Output() cartChange = new EventEmitter<any>();
 
-  constructor(private cartService: CartService) { }
+  constructor(private cartService: CartService, private authService: AuthService) { }
 
   ngOnInit(): void {
   }
 
   removeCart(productId: number) {
-    this.cartService.removeCart(productId).subscribe(() => this.pricesChange());
+    let token = localStorage.getItem('token');
+
+    if (token)
+      this.cartService.removeCart(productId).subscribe(() => this.pricesChange());
+    else
+      this.cartService.remCartAndUpdateCartSource(productId);
+      this.pricesChange();
+      this.authService.setCartItemsCount(this.cartService.getCartSourceFromObs().length);
+      this.cartService.removeProductCartStorage(this.cartItem.productId);
   }
 
   changeQuantity(mode: string) {
+    let token = localStorage.getItem('token');
+    if (!token) {
+      if (mode === 'inc') {
+        this.cartItem.subtotal = 0;
+        this.cartItem.subtotal += (++this.cartItem.quantity * this.cartItem.productPrice)
+      } else {
+        this.cartItem.subtotal = 0;
+        this.cartItem.subtotal += (--this.cartItem.quantity * this.cartItem.productPrice)
+      }
+      this.cartService.AddProductCartItemsStorage({productId: this.cartItem.productId, quantity: this.cartItem.quantity});
+      this.pricesChange();
+      return;
+    }
     this.cartService.updateQuantity({productId: this.cartItem.productId, quantity: mode === 'inc' ? ++this.cartItem.quantity: --this.cartItem.quantity}).pipe(
       map((res: CartItemOutDto) => {
           this.cartItem.subtotal = 0;

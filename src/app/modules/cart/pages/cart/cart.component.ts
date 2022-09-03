@@ -21,8 +21,20 @@ export class CartComponent implements OnInit {
   constructor(public cartService: CartService, private authService: AuthService) { }
 
   ngOnInit(): void {
+    let token = localStorage.getItem('token');
     this.authService.currentUser$.pipe(take(1)).subscribe(user => this.user = user);
-    this.cartService.getCart().subscribe((cart: any) => this.setPrices(cart));
+    if (token) {
+      this.cartService.getCart('fromDB').subscribe((cart: any) => this.setPrices(cart));
+    } else {
+      this.cartService.getCart('storage').subscribe((cart: any) => {
+        this.setPrices(cart);
+        const cartItems = localStorage.getItem('cartProducts');
+        if (cartItems) {
+          const cartsJSON = JSON.parse(cartItems).length;
+          this.authService.setCartItemsCount(cartsJSON);
+        }
+      });
+    }
   }
 
   pricesChanged() {

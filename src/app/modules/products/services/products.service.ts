@@ -94,6 +94,10 @@ export class ProductsService {
   }
 
   getBrands() {
+    if (this.brandSource.value && this.brandSource.value.length > 0) {
+      return of(this.brandSource.value);
+    }
+
     return this.http.get<BrandOutDto[]>(environment.appUrl + 'api/Brand').pipe(
       map((res: BrandOutDto[]) => {
         this.brandSource.next(res);

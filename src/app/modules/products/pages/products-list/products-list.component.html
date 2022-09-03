@@ -8,7 +8,7 @@
   <app-product-filters></app-product-filters>
   <div class="products-list">
     <ng-container *ngFor="let product of (productService.products$ | async) as products">
-      <app-product-card [product]="product"></app-product-card>
+      <app-product-card [product]="product" [user]="user"></app-product-card>
     </ng-container>
   </div>
 </div>

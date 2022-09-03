@@ -1,6 +1,6 @@
 import { CartItemInDto } from './../models/cartDto';
 import { environment } from './../../../../environments/environment';
-import { BehaviorSubject, map } from 'rxjs';
+import { BehaviorSubject, map, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from "@angular/core";
 import { CartItemOutDto } from '../models/cartDto';
@@ -13,14 +13,53 @@ export class CartService {
 
   constructor(private http: HttpClient) {}
 
-  getCart() {
-    return this.http.get<CartItemOutDto[]>(environment.appUrl + 'api/Cart').pipe(
-      map(cart => {
-        this.cartSource.next(cart);
-        return cart;
-      })
-    );
+  getCart(from: string) {
+    if (from === 'fromDB') {
+      return this.http.post<CartItemOutDto[]>(environment.appUrl + 'api/Cart/cartProducts', []).pipe(
+        map(cart => {
+          this.cartSource.next(cart);
+          return cart;
+        })
+      );
+    } else {
+      localStorage.setItem('cartProducts', JSON.stringify([{productId: 26, quantity: 3}, {productId: 28, quantity: 1}]));
+      const cartProds = JSON.parse(localStorage.getItem('cartProducts')!);
+      if (!cartProds) return of([]);
+
+      return this.http.post<CartItemOutDto[]>(environment.appUrl + 'api/Cart/cartProducts', cartProds).pipe(
+        map(cart => {
+          this.cartSource.next(cart);
+          return cart;
+        })
+      );
+    }
   }
+
+  AddProductCartItemsStorage(cartItemToBeadded: CartItemInDto) {
+    const cartProdsString = localStorage.getItem('cartProducts') || JSON.stringify([]);
+    const cartProds: CartItemInDto[] = JSON.parse(cartProdsString);
+
+    const existingCartInd = cartProds.findIndex(c => c.productId === cartItemToBeadded.productId);
+    if (existingCartInd >= 0) {
+      cartProds[existingCartInd].quantity = cartItemToBeadded.quantity;
+    } else {
+      cartProds.push(cartItemToBeadded);
+    }
+    localStorage.setItem('cartProducts', JSON.stringify(cartProds));
+  }
+
+
+  removeProductCartStorage(productId: number) {
+    const cartProdsString = localStorage.getItem('cartProducts') || JSON.stringify([]);
+    let cartProds: CartItemInDto[] = JSON.parse(cartProdsString);
+
+    const existingCartInd = cartProds.findIndex(c => c.productId === productId);
+    if (existingCartInd >= 0) {
+      cartProds = cartProds.filter(c => c.productId != productId);
+    }
+    localStorage.setItem('cartProducts', JSON.stringify(cartProds));
+  }
+
 
   updateQuantity(cartItemInDto: CartItemInDto) {
     return this.http.patch<CartItemOutDto>(environment.appUrl + 'api/Cart', cartItemInDto).pipe(
@@ -38,9 +77,7 @@ export class CartService {
     return this.http.delete<boolean>(environment.appUrl + 'api/Cart?productId=' + productId).pipe(
       map(res => {
         if (res) {
-          let cart: CartItemOutDto[] = this.cartSource.value;
-          cart = cart.filter(c => c.productId != productId)
-          this.cartSource.next(cart);
+          this.remCartAndUpdateCartSource(productId);
         }
       })
     );
@@ -48,6 +85,42 @@ export class CartService {
 
   getCartSourceFromObs() {
     return this.cartSource.value;
+  }
+
+  remCartAndUpdateCartSource(productId: number) {
+    let cart: CartItemOutDto[] = this.cartSource.value;
+    cart = cart.filter(c => c.productId != productId)
+    this.cartSource.next(cart);
+  }
+
+  clearCartAfterLogout() {
+    this.cartSource.next([]);
+    localStorage.removeItem('cartProducts');
+  }
+
+  addToCart(cartItems: CartItemInDto[]) {
+    return this.http.post<CartItemOutDto[]>(environment.appUrl + 'api/Cart', cartItems).pipe(
+      map(cart => {
+        cart.forEach(cartitem => {
+          let cartSourceValue: CartItemOutDto[] = this.cartSource.value;
+          if (cartitem.quantity > 1) {
+
+            let prodIndx = cartSourceValue.findIndex(c => c.productId == cartitem.productId);
+            if (prodIndx < 0) {
+              cartSourceValue.push(cartitem);
+              this.cartSource.next(cartSourceValue);
+              return;
+            }
+            cartSourceValue[prodIndx].quantity += cartitem.quantity;
+            this.cartSource.next(cartSourceValue);
+          } else {
+            cartSourceValue.push(cartitem);
+            this.cartSource.next(cartSourceValue);
+          }
+        });
+        return cart;
+      })
+    );
   }
 
 }

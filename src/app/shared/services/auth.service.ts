@@ -1,10 +1,11 @@
+import { CartService } from './../../modules/cart/services/cart.service';
 import { RegisterDto } from './../../modules/auth/models/registerDto';
 import { AuthOutDto } from './../../modules/auth/models/authDto';
 import { LoginDto } from './../../modules/auth/models/loginDto';
 import { environment } from './../../../environments/environment';
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { catchError, map, Observable, of, ReplaySubject, take } from "rxjs";
+import { catchError, map, Observable, of, ReplaySubject, Subject, take } from "rxjs";
 import { UserOutDto } from "../models/user";
 import { AddressInDto, AddressOutDto } from '../models/address';
 import { ChangePasswordDto } from './../../modules/auth/models/changePasswordDto';
@@ -18,7 +19,10 @@ export class AuthService {
   private currentUserSource = new ReplaySubject<UserOutDto | null>(1);
   currentUser$ = this.currentUserSource.asObservable();
 
-  constructor(private http: HttpClient,private _snackBar: MatSnackBar) {}
+  private cartItemsCountNoUser = new Subject<number>();
+  currentItemsCountNoUser$ = this.cartItemsCountNoUser.asObservable();
+
+  constructor(private http: HttpClient,private _snackBar: MatSnackBar, private cartService: CartService) {}
 
   getUser() {
     return this.http.get<UserOutDto>(environment.appUrl + 'api/Auth/user').pipe(
@@ -32,6 +36,10 @@ export class AuthService {
 
   getToken() {
     return this.token || localStorage.getItem('token');
+  }
+
+  setCartItemsCount(count: number) {
+    this.cartItemsCountNoUser.next(count);
   }
 
   login(loginDto: LoginDto) {
@@ -68,6 +76,7 @@ export class AuthService {
   logout() {
     localStorage.removeItem('token');
     this.currentUserSource.next(null);
+    this.cartService.clearCartAfterLogout();
     this.token = '';
   }
 

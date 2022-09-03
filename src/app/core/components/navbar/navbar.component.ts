@@ -27,6 +27,8 @@ export class NavbarComponent implements OnInit {
   dialogRef!: MatDialogRef<any>;
   user!: UserOutDto | null;
 
+  cartItemsCountNoUser: number = 0;
+
   productName: string = '';
 
   constructor(
@@ -56,6 +58,12 @@ export class NavbarComponent implements OnInit {
         if (this.user)
           this.addressForm.get('address')?.patchValue(this.user?.address);
       });
+
+    this.authService.currentItemsCountNoUser$.subscribe(count => {
+      this.cartItemsCountNoUser = count;
+      this.ref.detectChanges();
+    });
+
   }
 
   openAddressDialog() {
@@ -86,8 +94,13 @@ export class NavbarComponent implements OnInit {
   }
 
   productNameChanged() {
-    let prodParams = this.productService.getProductParams();
-    prodParams.productName = this.productName;
-    this.productService.setProductParams(prodParams);
+    if (this.router.url.indexOf('/products') === 0) {
+      let prodParams = this.productService.getProductParams();
+      prodParams.productName = this.productName;
+      this.productService.setProductParams(prodParams);
+    } else {
+      this.router.navigateByUrl('/products?search=' + this.productName);
+    }
+
   }
 }

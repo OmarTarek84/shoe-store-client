@@ -42,7 +42,7 @@
         <app-review-box [review]="review"></app-review-box>
       </ng-container>
     </div>
-    <form class="review-form" [formGroup]="reviewForm" (ngSubmit)="reviewFormSubmitted()">
+    <form class="review-form" *ngIf="user" [formGroup]="reviewForm" (ngSubmit)="reviewFormSubmitted()">
       <h3>{{userHasReview ? 'Edit Your': 'Write a'}} Review</h3>
       <app-select-input formControlName="rating" (selectInputChanged)="reviewChanged()" [label]="'Rating'" [options]="ratingList"></app-select-input>
       <app-text-input formControlName="comment" [label]="'Comment'" [placeholder]="'Write a comment Here'"></app-text-input>

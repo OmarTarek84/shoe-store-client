@@ -23,7 +23,7 @@
         </ng-container>
         <a class="cart-icon" routerLink="/cart">
           <mat-icon>shopping_cart</mat-icon>
-          <span>{{user?.cartItemsCount || cartItemsCountNoUser || 0}}</span>
+          <span>{{user ? user.cartItemsCount: cartItemsCountNoUser}}</span>
         </a>
       </div>
     </div>

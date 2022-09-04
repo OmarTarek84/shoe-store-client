@@ -30,7 +30,20 @@ export class AuthService {
         this.logout();
         return of(err);
       }),
-      map((user: UserOutDto) => this.currentUserSource.next(user))
+      map((user: UserOutDto) => {
+        this.currentUserSource.next(user);
+
+        if (user.cartItemsCount === 0) {
+          this.cartService.addStorageCartToDb().subscribe(cart => {
+            if (cart.length) {
+              let useroutDto = user;
+              useroutDto.cartItemsCount = cart.length;
+              this.currentUserSource.next(user);
+            }
+          })
+        }
+
+      })
     );
   }
 
@@ -75,8 +88,9 @@ export class AuthService {
 
   logout() {
     localStorage.removeItem('token');
-    this.currentUserSource.next(null);
     this.cartService.clearCartAfterLogout();
+    this.cartItemsCountNoUser.next(0);
+    this.currentUserSource.next(null);
     this.token = '';
   }
 

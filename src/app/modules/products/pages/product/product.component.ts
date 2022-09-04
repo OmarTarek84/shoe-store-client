@@ -65,6 +65,7 @@ export class ProductComponent implements OnInit {
             }
           }),
           switchMap((prod) => {
+            if (!localStorage.getItem('token')) return of();
             return this.productService.getUserReview(productId).pipe(
               take(1),
               map((userReview: ReviewOutDto) => {
@@ -98,6 +99,10 @@ export class ProductComponent implements OnInit {
         if (this.user && cart && cart[0].quantity === 1) {
           this.user.cartItemsCount += 1;
           this.authService.setUser(this.user);
+        } else if (!this.user && cart && cart[0].quantity === 1) {
+          const cartProdsString = localStorage.getItem('cartProducts') || JSON.stringify([]);
+          const cartProds = JSON.parse(cartProdsString);
+          this.authService.setCartItemsCount(cartProds.length);
         }
       })
     ).subscribe(() => this._snackBar.open("Item added/updated to your cart", "close", {duration: 3000}));

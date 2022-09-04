@@ -6,7 +6,7 @@
   </ng-container>
 </div>
 
-<table class="subtotal-tax">
+<table class="subtotal-tax" *ngIf="(cartService.cart$ | async).length > 0; else nocart">
   <tr>
     <th>Subtotal: <span>${{subTotal.toFixed(2)}}</span></th>
     <th>Tax: <span>${{tax.toFixed(2)}}</span></th>
@@ -14,7 +14,11 @@
   </tr>
 </table>
 
-<div class="action-btns">
+<div class="action-btns" *ngIf="(cartService.cart$ | async).length > 0">
   <a mat-raised-button color="primary" routerLink="/products">Continue Shopping</a>
   <button mat-raised-button color="accent">Proceed To Checkout</button>
 </div>
+
+<ng-template #nocart>
+  <h3 class="nocart">No items in your cart yet</h3>
+</ng-template>

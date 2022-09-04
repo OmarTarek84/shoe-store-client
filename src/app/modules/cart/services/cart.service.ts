@@ -22,9 +22,8 @@ export class CartService {
         })
       );
     } else {
-      localStorage.setItem('cartProducts', JSON.stringify([{productId: 26, quantity: 3}, {productId: 28, quantity: 1}]));
       const cartProds = JSON.parse(localStorage.getItem('cartProducts')!);
-      if (!cartProds) return of([]);
+      if (!cartProds || !cartProds.length) return of([]);
 
       return this.http.post<CartItemOutDto[]>(environment.appUrl + 'api/Cart/cartProducts', cartProds).pipe(
         map(cart => {
@@ -60,6 +59,21 @@ export class CartService {
     localStorage.setItem('cartProducts', JSON.stringify(cartProds));
   }
 
+  addStorageCartToDb() {
+    const cartProdsString = localStorage.getItem('cartProducts') || JSON.stringify([]);
+    let cartProds: CartItemInDto[] = JSON.parse(cartProdsString);
+    if (cartProds.length > 0) {
+      localStorage.removeItem('cartProducts');
+      this.cartSource.next([]);
+      return this.addToCart(cartProds);
+    } else return of([]);
+  }
+
+  clearCartAfterLogout() {
+    this.cartSource.next([]);
+    localStorage.removeItem('cartProducts');
+  }
+
 
   updateQuantity(cartItemInDto: CartItemInDto) {
     return this.http.patch<CartItemOutDto>(environment.appUrl + 'api/Cart', cartItemInDto).pipe(
@@ -93,34 +107,52 @@ export class CartService {
     this.cartSource.next(cart);
   }
 
-  clearCartAfterLogout() {
-    this.cartSource.next([]);
-    localStorage.removeItem('cartProducts');
-  }
-
   addToCart(cartItems: CartItemInDto[]) {
-    return this.http.post<CartItemOutDto[]>(environment.appUrl + 'api/Cart', cartItems).pipe(
-      map(cart => {
-        cart.forEach(cartitem => {
-          let cartSourceValue: CartItemOutDto[] = this.cartSource.value;
-          if (cartitem.quantity > 1) {
+    if (localStorage.getItem('token')) {
+      return this.http.post<CartItemOutDto[]>(environment.appUrl + 'api/Cart', cartItems).pipe(
+        map(cart => {
+          cart.forEach(cartitem => {
+            let cartSourceValue: CartItemOutDto[] = this.cartSource.value;
+            if (cartitem.quantity > 1) {
 
-            let prodIndx = cartSourceValue.findIndex(c => c.productId == cartitem.productId);
-            if (prodIndx < 0) {
+              let prodIndx = cartSourceValue.findIndex(c => c.productId == cartitem.productId);
+              if (prodIndx < 0) {
+                cartSourceValue.push(cartitem);
+                this.cartSource.next(cartSourceValue);
+                return;
+              }
+              cartSourceValue[prodIndx].quantity += cartitem.quantity;
+              this.cartSource.next(cartSourceValue);
+            } else {
               cartSourceValue.push(cartitem);
               this.cartSource.next(cartSourceValue);
-              return;
             }
-            cartSourceValue[prodIndx].quantity += cartitem.quantity;
-            this.cartSource.next(cartSourceValue);
-          } else {
-            cartSourceValue.push(cartitem);
-            this.cartSource.next(cartSourceValue);
-          }
-        });
-        return cart;
-      })
-    );
+          });
+          return cart;
+        })
+      );
+    } else {
+      const cartProdsString = localStorage.getItem('cartProducts') || JSON.stringify([]);
+      let cartProds: CartItemInDto[] = JSON.parse(cartProdsString);
+
+      let newCartProducts: CartItemInDto[] = [];
+
+      cartItems.forEach(cartitem => {
+        const existingCartInd = cartProds.findIndex(c => c.productId === cartitem.productId);
+        if (existingCartInd >= 0) {
+          cartProds[existingCartInd].quantity += cartitem.quantity;
+          newCartProducts.push(cartProds[existingCartInd]);
+        } else {
+          const newCartAdded = {productId: cartitem.productId, quantity: cartitem.quantity};
+          cartProds.push(newCartAdded);
+          newCartProducts.push(newCartAdded);
+        }
+      });
+      localStorage.setItem('cartProducts', JSON.stringify(cartProds));
+
+      return of(newCartProducts);
+
+    }
   }
 
 }

@@ -1,4 +1,4 @@
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from './../../../../shared/services/auth.service';
 import { FormGroup, FormBuilder, Validators, ValidatorFn, AbstractControl, AsyncValidatorFn } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
@@ -13,10 +13,12 @@ import { AddressInDto } from './../../../../shared/models/address';
 export class RegisterComponent implements OnInit {
 
   registerForm!: FormGroup;
+  returnUrl: string = '/products';
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) { }
+  constructor(private fb: FormBuilder, private authService: AuthService, private activatedRoute: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
+    this.returnUrl = this.activatedRoute.snapshot.queryParams.returnUrl || '/';
     this.registerForm = this.fb.group({
 
       userDetails: this.fb.group({
@@ -85,7 +87,7 @@ export class RegisterComponent implements OnInit {
       switchMap(() => {
         return this.authService.insertOrUpdateAddress(addressValue)
       })
-    ).subscribe(() => this.router.navigate(['/']));
+    ).subscribe(() => this.router.navigateByUrl(this.returnUrl));
 
   }
 

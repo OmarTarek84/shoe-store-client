@@ -1,3 +1,4 @@
+import { CartItemInDto } from './../../../modules/cart/models/cartDto';
 import { ProductsService } from './../../../modules/products/services/products.service';
 import { Router } from '@angular/router';
 import { take } from 'rxjs';
@@ -63,6 +64,12 @@ export class NavbarComponent implements OnInit {
       this.cartItemsCountNoUser = count;
       this.ref.detectChanges();
     });
+
+    if (!localStorage.getItem('token')) {
+      const cartProdsString = localStorage.getItem('cartProducts') || JSON.stringify([]);
+      let cartProds: CartItemInDto[] = JSON.parse(cartProdsString);
+      this.cartItemsCountNoUser = cartProds.length;
+    }
 
   }
 

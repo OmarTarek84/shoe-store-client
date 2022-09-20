@@ -5,6 +5,7 @@ import { OrdersRoutingModule } from './orders-routing.module';
 import { OrdersListComponent } from './pages/orders-list/orders-list.component';
 import { OrderComponent } from './pages/order/order.component';
 import { OrderItemComponent } from './components/order-item/order-item.component';
+import { OrderSuccessComponent } from './pages/order-success/order-success.component';
 
 
 @NgModule({
@@ -12,6 +13,7 @@ import { OrderItemComponent } from './components/order-item/order-item.component
     OrdersListComponent,
     OrderComponent,
     OrderItemComponent,
+    OrderSuccessComponent,
   ],
   imports: [
     CommonModule,

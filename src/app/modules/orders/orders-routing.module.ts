@@ -1,3 +1,4 @@
+import { OrderSuccessComponent } from './pages/order-success/order-success.component';
 import { OrderComponent } from './pages/order/order.component';
 import { OrdersListComponent } from './pages/orders-list/orders-list.component';
 import { CommonModule } from '@angular/common';
@@ -7,11 +8,11 @@ import { NgModule } from "@angular/core";
 const routes: Routes = [
   {
     path: '',
-    component: OrdersListComponent
+    component: OrdersListComponent,
   },
   {
-    path: ':id',
-    component: OrderComponent
+    path: 'success',
+    component: OrderSuccessComponent
   },
 ]
 

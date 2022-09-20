@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { take } from 'rxjs';
 import { UserOutDto } from './../../../../shared/models/user';
 import { AuthService } from './../../../../shared/services/auth.service';
@@ -18,7 +19,7 @@ export class CartComponent implements OnInit {
 
   user!: UserOutDto | null;
 
-  constructor(public cartService: CartService, private authService: AuthService) { }
+  constructor(public cartService: CartService, private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
     let token = localStorage.getItem('token');
@@ -53,8 +54,17 @@ export class CartComponent implements OnInit {
     cartItems.forEach((item: CartItemOutDto) => {
       this.subTotal += (item.quantity * item.productPrice);
     });
-    this.tax = this.subTotal * (12 / 100);
-    this.totalPrice = this.subTotal + this.tax;
+    this.totalPrice = this.subTotal
+  }
+
+  checkout() {
+    this.cartService.createCheckoutSession().subscribe((url: any) => {
+      if (this.user && url) {
+        document.location.href = url;
+      } else {
+        this.router.navigateByUrl('login?returnUrl=/cart');
+      }
+    })
   }
 
 }

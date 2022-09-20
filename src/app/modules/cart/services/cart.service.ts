@@ -1,7 +1,7 @@
 import { CartItemInDto } from './../models/cartDto';
 import { environment } from './../../../../environments/environment';
-import { BehaviorSubject, map, of } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, map, of, take } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from "@angular/core";
 import { CartItemOutDto } from '../models/cartDto';
 
@@ -153,6 +153,11 @@ export class CartService {
       return of(newCartProducts);
 
     }
+  }
+
+  createCheckoutSession() {
+    const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
+    return this.http.post(environment.appUrl + 'api/Payment/checkout', {}, {headers,responseType: 'text'}).pipe(take(1));
   }
 
 }

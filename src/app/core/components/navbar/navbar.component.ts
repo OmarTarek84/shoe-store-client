@@ -101,7 +101,7 @@ export class NavbarComponent implements OnInit {
   }
 
   productNameChanged() {
-    if (this.router.url.indexOf('/products') === 0) {
+    if (this.router.url === '/products') {
       let prodParams = this.productService.getProductParams();
       prodParams.productName = this.productName;
       this.productService.setProductParams(prodParams);

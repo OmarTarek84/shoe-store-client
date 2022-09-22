@@ -58,11 +58,15 @@ export class CartComponent implements OnInit {
   }
 
   checkout() {
+    if (!this.user) {
+      this.router.navigateByUrl('/auth/login?returnUrl=/cart');
+      return;
+    }
     this.cartService.createCheckoutSession().subscribe((url: any) => {
       if (this.user && url) {
         document.location.href = url;
       } else {
-        this.router.navigateByUrl('login?returnUrl=/cart');
+        this.router.navigateByUrl('/auth/login?returnUrl=/cart');
       }
     })
   }

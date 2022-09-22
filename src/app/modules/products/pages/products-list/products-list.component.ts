@@ -1,6 +1,6 @@
 import { AuthService } from './../../../../shared/services/auth.service';
 import { ActivatedRoute } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { ProductsService } from '../../services/products.service';
 import { take } from 'rxjs';
@@ -11,7 +11,7 @@ import { UserOutDto } from 'src/app/shared/models/user';
   templateUrl: './products-list.component.html',
   styleUrls: ['./products-list.component.scss']
 })
-export class ProductsListComponent implements OnInit {
+export class ProductsListComponent implements OnInit, OnDestroy {
 
   user!: UserOutDto | null;
 
@@ -40,5 +40,9 @@ export class ProductsListComponent implements OnInit {
     prodParams.pageNumber = event.pageIndex + 1;
     prodParams.pageSize = event.pageSize;
     this.productService.setProductParams(prodParams);
+  }
+
+  ngOnDestroy(): void {
+    this.productService.resetProductParams();
   }
 }

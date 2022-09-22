@@ -67,6 +67,11 @@ export class ProductsService {
     ).subscribe();
   }
 
+  resetProductParams() {
+    this.productParams = new ProductParams();
+    this.productPagination = new PaginationParams();
+  }
+
   getProduct(productId: number) {
     return this.products$.pipe(
       take(1),
